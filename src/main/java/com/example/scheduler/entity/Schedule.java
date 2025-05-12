@@ -20,4 +20,10 @@ public class Schedule {
     private LocalDateTime createDate;
     private LocalDateTime lastModifiedDate;
 
+    public Schedule(String password, String task, String author){
+        this.password = password;
+        this.task = task;
+        this.author = author;
+    }
+
 }
