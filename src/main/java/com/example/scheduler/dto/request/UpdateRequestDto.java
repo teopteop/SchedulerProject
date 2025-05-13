@@ -4,7 +4,8 @@ import lombok.Getter;
 
 @Getter
 public class UpdateRequestDto {
+
+    private Long scheduleId;
     private String password;
     private String task;
-    private String author;
 }

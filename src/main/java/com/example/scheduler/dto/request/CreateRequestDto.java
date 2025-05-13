@@ -3,9 +3,11 @@ package com.example.scheduler.dto.request;
 import lombok.Getter;
 
 @Getter
-public class ScheduleRequestDto {
+public class CreateRequestDto {
 
-    private String author;
+    private Long scheduleId;
+    private Long authorId;
+
     private String task;
     private String password;
 
