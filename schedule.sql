@@ -1,7 +1,7 @@
 create table schedule
 (
     scheduleId bigint auto_increment primary key,
-    authorId bigint not null comment "userid 참조키",
+    authorId bigint not null comment "Refers to user.userId",
     password varchar(20) not null,
     task varchar(500) not null,
     createDate timestamp default current_timestamp,
