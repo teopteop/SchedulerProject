@@ -2,11 +2,13 @@ package com.example.scheduler.repository;
 
 import com.example.scheduler.dto.ScheduleResponseDto;
 import com.example.scheduler.entity.Schedule;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -14,6 +16,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class ScheduleRepositoryImpl implements ScheduleRepository{
@@ -40,6 +43,12 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
     @Override
     public List<ScheduleResponseDto> findAllSchedule() {
         return jdbcTemplate.query("select * from schedule", scheduleFindRowMapper());
+    }
+
+    @Override
+    public ScheduleResponseDto findScheduleById(Long id) {
+        return jdbcTemplate.query("select * from schedule where id=?", scheduleFindRowMapper(), id)
+                .stream().findAny().orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "requested ID does not exist."));
     }
 
     private RowMapper<ScheduleResponseDto> scheduleFindRowMapper() {
