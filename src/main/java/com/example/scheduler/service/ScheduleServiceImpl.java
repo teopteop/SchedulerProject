@@ -1,5 +1,6 @@
 package com.example.scheduler.service;
 
+import com.example.scheduler.dto.request.DeleteRequestDto;
 import com.example.scheduler.dto.request.ScheduleRequestDto;
 import com.example.scheduler.dto.request.UpdateRequestDto;
 import com.example.scheduler.dto.response.PasswordResponseDto;
@@ -39,12 +40,18 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     @Override
     public ScheduleResponseDto updateSchedule(Long id, UpdateRequestDto updateRequestDto) {
+        //password check
         if(updateRequestDto.getPassword().equals(scheduleRepository.getPasswordDto(id).getPassword())){
             scheduleRepository.updateSchedule(id, updateRequestDto);
         };
         return scheduleRepository.findScheduleById(id);
     }
 
-
-
+    @Override
+    public void deleteSchedule(Long id, DeleteRequestDto deleteRequestDto) {
+        //password check
+        if(deleteRequestDto.getPassword().equals(scheduleRepository.getPasswordDto(id).getPassword())){
+            scheduleRepository.deleteSchedule(id);
+        }
+    }
 }

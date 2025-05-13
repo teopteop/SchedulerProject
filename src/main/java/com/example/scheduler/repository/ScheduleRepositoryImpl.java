@@ -57,6 +57,11 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
         return jdbcTemplate.update("update schedule set task=?, author=? where id=?", updateRequestDto.getTask(), updateRequestDto.getAuthor(), id);
     }
 
+    @Override
+    public void deleteSchedule(Long id) {
+        int rs = jdbcTemplate.update("delete from schedule where id=?", id);
+    }
+
     //password 가 필요할 시 사용
     @Override
     public PasswordResponseDto getPasswordDto(Long id) {
