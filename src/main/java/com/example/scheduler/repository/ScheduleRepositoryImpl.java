@@ -1,5 +1,7 @@
 package com.example.scheduler.repository;
 
+import com.example.scheduler.dto.request.UpdateRequestDto;
+import com.example.scheduler.dto.response.PasswordResponseDto;
 import com.example.scheduler.dto.response.ScheduleResponseDto;
 import com.example.scheduler.entity.Schedule;
 import org.springframework.http.HttpStatus;
@@ -50,6 +52,18 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
                 .stream().findAny().orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "requested ID does not exist."));
     }
 
+    @Override
+    public int updateSchedule(Long id, UpdateRequestDto updateRequestDto) {
+        return jdbcTemplate.update("update schedule set task=?, author=? where id=?", updateRequestDto.getTask(), updateRequestDto.getAuthor(), id);
+    }
+
+    //password 가 필요할 시 사용
+    @Override
+    public PasswordResponseDto getPasswordDto(Long id) {
+        return jdbcTemplate.query("select id, password from schedule where id=?", passwordMapper(), id)
+                .stream().findAny().orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "requested ID does not exist."));
+    }
+
     private RowMapper<ScheduleResponseDto> scheduleFindRowMapper() {
         return new RowMapper<ScheduleResponseDto>() {
             @Override
@@ -64,4 +78,17 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
             }
         };
     }
+
+    private RowMapper<PasswordResponseDto> passwordMapper() {
+        return new RowMapper<PasswordResponseDto>() {
+            @Override
+            public PasswordResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new PasswordResponseDto(
+                        rs.getLong("id"),
+                        rs.getString("password")
+                );
+            }
+        };
+    }
+
 }
