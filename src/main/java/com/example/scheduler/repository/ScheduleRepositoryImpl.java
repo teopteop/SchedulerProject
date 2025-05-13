@@ -3,7 +3,9 @@ package com.example.scheduler.repository;
 import com.example.scheduler.dto.request.UpdateRequestDto;
 import com.example.scheduler.dto.response.PasswordResponseDto;
 import com.example.scheduler.dto.response.ScheduleResponseDto;
+import com.example.scheduler.dto.response.UserIdResponseDto;
 import com.example.scheduler.entity.Schedule;
+import com.example.scheduler.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -69,14 +71,19 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
                 .stream().findAny().orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "requested ID does not exist."));
     }
 
+    @Override
+    public List<UserIdResponseDto> userIdFindByAuthorId(Long id) {
+        return jdbcTemplate.query("select * from user where id=?", userIdMapper(), id);
+    }
+
     private RowMapper<ScheduleResponseDto> scheduleFindRowMapper() {
         return new RowMapper<ScheduleResponseDto>() {
             @Override
             public ScheduleResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
                 return new ScheduleResponseDto(
-                        rs.getLong("id"),
+                        rs.getLong("scheduleId"),
+                        rs.getLong("authorId"),
                         rs.getString("task"),
-                        rs.getString("author"),
                         rs.getTimestamp("createDate").toLocalDateTime(),
                         rs.getTimestamp("lastModifiedDate").toLocalDateTime()
                 );
@@ -89,8 +96,19 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
             @Override
             public PasswordResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
                 return new PasswordResponseDto(
-                        rs.getLong("id"),
+                        rs.getLong("scheduleId"),
                         rs.getString("password")
+                );
+            }
+        };
+    }
+
+    private RowMapper<UserIdResponseDto> userIdMapper() {
+        return new RowMapper<UserIdResponseDto>() {
+            @Override
+            public UserIdResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new UserIdResponseDto(
+                        rs.getLong("userId")
                 );
             }
         };
