@@ -1,7 +1,7 @@
 package com.example.scheduler.service;
 
-import com.example.scheduler.dto.ScheduleRequestDto;
-import com.example.scheduler.dto.ScheduleResponseDto;
+import com.example.scheduler.dto.request.ScheduleRequestDto;
+import com.example.scheduler.dto.response.ScheduleResponseDto;
 import com.example.scheduler.entity.Schedule;
 import com.example.scheduler.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;

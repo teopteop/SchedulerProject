@@ -1,6 +1,6 @@
 package com.example.scheduler.repository;
 
-import com.example.scheduler.dto.ScheduleResponseDto;
+import com.example.scheduler.dto.response.ScheduleResponseDto;
 import com.example.scheduler.entity.Schedule;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,7 +16,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Repository
 public class ScheduleRepositoryImpl implements ScheduleRepository{
