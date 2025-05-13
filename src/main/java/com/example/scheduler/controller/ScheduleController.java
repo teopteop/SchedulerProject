@@ -1,7 +1,7 @@
 package com.example.scheduler.controller;
 
 import com.example.scheduler.dto.request.DeleteRequestDto;
-import com.example.scheduler.dto.request.ScheduleRequestDto;
+import com.example.scheduler.dto.request.CreateRequestDto;
 import com.example.scheduler.dto.request.UpdateRequestDto;
 import com.example.scheduler.dto.response.ScheduleResponseDto;
 import com.example.scheduler.service.ScheduleService;
@@ -20,10 +20,10 @@ public class ScheduleController {
         this.scheduleService = scheduleService;
     }
 
-    //일정생성 등록 id값 리턴
+    //일정생성 등록 authorId 가 등록된 user 인지 확인할 것
     @PostMapping
-    public ResponseEntity<Long> saveSchedule(@RequestBody ScheduleRequestDto scheduleRequestDto){
-        return new ResponseEntity<>(scheduleService.saveSchedule(scheduleRequestDto).getId(), HttpStatus.CREATED);
+    public ResponseEntity<ScheduleResponseDto> saveSchedule(@RequestBody CreateRequestDto cDto){
+        return new ResponseEntity<>(scheduleService.saveSchedule(cDto), HttpStatus.CREATED);
     }
 
     //일정 전체조회
@@ -55,4 +55,5 @@ public class ScheduleController {
         scheduleService.deleteSchedule(id, deleteRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }

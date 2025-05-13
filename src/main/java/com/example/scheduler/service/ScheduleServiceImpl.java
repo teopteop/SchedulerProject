@@ -1,17 +1,15 @@
 package com.example.scheduler.service;
 
 import com.example.scheduler.dto.request.DeleteRequestDto;
-import com.example.scheduler.dto.request.ScheduleRequestDto;
+import com.example.scheduler.dto.request.CreateRequestDto;
 import com.example.scheduler.dto.request.UpdateRequestDto;
-import com.example.scheduler.dto.response.PasswordResponseDto;
 import com.example.scheduler.dto.response.ScheduleResponseDto;
+import com.example.scheduler.dto.response.UserIdResponseDto;
 import com.example.scheduler.entity.Schedule;
+import com.example.scheduler.exception.UserNotFoundException;
 import com.example.scheduler.repository.ScheduleRepository;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -23,8 +21,9 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     @Override
-    public ScheduleResponseDto saveSchedule(ScheduleRequestDto dto) {
-         Schedule schedule = new Schedule(dto.getPassword(), dto.getTask(), dto.getAuthor());
+    public ScheduleResponseDto saveSchedule(CreateRequestDto cDto) {
+        scheduleRepository.userIdFindByAuthorId(cDto.getAuthorId()).stream().findAny().orElseThrow(() -> new UserNotFoundException("해당 id와 일치하는 유저가 없습니다."));
+        Schedule schedule = new Schedule(cDto.getPassword(), cDto.getTask(), cDto.getAuthorId());
         return new ScheduleResponseDto(scheduleRepository.saveSchedule(schedule));
     }
 
