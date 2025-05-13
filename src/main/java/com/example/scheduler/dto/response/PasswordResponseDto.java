@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class PasswordResponseDto {
-    private Long id;
+    private Long userId;
     private String password;
 }
