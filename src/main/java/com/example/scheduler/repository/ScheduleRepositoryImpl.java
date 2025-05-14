@@ -24,17 +24,17 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class ScheduleRepositoryImpl implements ScheduleRepository{
+public class ScheduleRepositoryImpl implements ScheduleRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public ScheduleRepositoryImpl(DataSource dataSource){
+    public ScheduleRepositoryImpl(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override
     public Long saveSchedule(Schedule schedule) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        simpleJdbcInsert.withTableName("schedule").usingColumns("authorId","password","task") //컬럼지정 추가
+        simpleJdbcInsert.withTableName("schedule").usingColumns("authorId", "password", "task") //컬럼지정 추가
                 .usingGeneratedKeyColumns("scheduleId");
 
         Map<String, Object> params = new HashMap<>();
@@ -137,5 +137,4 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
             }
         };
     }
-
 }

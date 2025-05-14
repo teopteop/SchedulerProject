@@ -10,11 +10,9 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 public class ScheduleResponseDto {
-
     private Long scheduleId;
     private Long authorId;
     private String task;
     private LocalDateTime createDate;
     private LocalDateTime lastModifiedDate;
-
 }

@@ -11,11 +11,18 @@ import java.util.List;
 
 public interface ScheduleRepository {
     Long saveSchedule(Schedule schedule);
+
     List<ScheduleResponseDto> findAllSchedule();
+
     List<ScheduleResponseDto> findScheduleById(Long id);
+
     List<ScheduleWithUserNameDto> findScheduleByUserId(Long id);
+
     int updateSchedule(Long id, UpdateRequestDto updateRequestDto);
+
     List<PasswordResponseDto> getPasswordDto(Long id);
+
     int deleteSchedule(Long id);
+
     List<UserIdResponseDto> userIdFindByAuthorId(Long id);
 }

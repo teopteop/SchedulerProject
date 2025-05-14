@@ -17,19 +17,19 @@ import java.util.List;
 public class ScheduleController {
     private final ScheduleService scheduleService;
 
-    public ScheduleController(ScheduleService scheduleService){
+    public ScheduleController(ScheduleService scheduleService) {
         this.scheduleService = scheduleService;
     }
 
     //일정생성 등록 authorId 가 등록된 user 인지 확인할 것
     @PostMapping
-    public ResponseEntity<ScheduleResponseDto> saveSchedule(@RequestBody CreateRequestDto cDto){
+    public ResponseEntity<ScheduleResponseDto> saveSchedule(@RequestBody CreateRequestDto cDto) {
         return new ResponseEntity<>(scheduleService.saveSchedule(cDto), HttpStatus.CREATED);
     }
 
     //일정 전체조회
     @GetMapping
-    public ResponseEntity<List<ScheduleResponseDto>> findAllSchedule(){
+    public ResponseEntity<List<ScheduleResponseDto>> findAllSchedule() {
         return new ResponseEntity<>(scheduleService.findAllSchedule(), HttpStatus.OK);
     }
 
@@ -37,7 +37,7 @@ public class ScheduleController {
     @GetMapping("/{id}")
     public ResponseEntity<ScheduleResponseDto> findScheduleById(
             @PathVariable Long id
-    ){
+    ) {
         return new ResponseEntity<>(scheduleService.findScheduleById(id), HttpStatus.OK);
     }
 
@@ -45,7 +45,7 @@ public class ScheduleController {
     @GetMapping("/user/{id}")
     public ResponseEntity<List<ScheduleWithUserNameDto>> findScheduleByUserId(
             @PathVariable Long id
-    ){
+    ) {
         return new ResponseEntity<>(scheduleService.findScheduleByUserId(id), HttpStatus.OK);
     }
 
@@ -54,8 +54,8 @@ public class ScheduleController {
     public ResponseEntity<ScheduleResponseDto> updateSchedule(
             @PathVariable Long id,
             @RequestBody UpdateRequestDto updateRequestDto
-    ){
-      return new ResponseEntity<>(scheduleService.updateSchedule(id, updateRequestDto), HttpStatus.OK);
+    ) {
+        return new ResponseEntity<>(scheduleService.updateSchedule(id, updateRequestDto), HttpStatus.OK);
     }
 
     //일정 삭제
@@ -63,9 +63,8 @@ public class ScheduleController {
     public ResponseEntity<Void> deleteSchedule(
             @PathVariable Long id,
             @RequestBody DeleteRequestDto deleteRequestDto
-    ){
+    ) {
         scheduleService.deleteSchedule(id, deleteRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }

@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class ScheduleWithUserNameDto {
-
     private Long scheduleId;
     private Long authorId;
     private String task;
