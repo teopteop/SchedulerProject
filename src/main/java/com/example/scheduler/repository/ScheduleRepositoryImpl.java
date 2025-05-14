@@ -53,7 +53,13 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
 
     @Override
     public List<ScheduleResponseDto> findScheduleById(Long id) {
-        return jdbcTemplate.query("select * from schedule where scheduleId=?", scheduleMapper(), id);
+        return jdbcTemplate.query("select * from schedule where scheduleId=? order by lastModifiedDate desc", scheduleMapper(), id);
+    }
+
+    @Override
+    public List<ScheduleWithUserNameDto> findScheduleByUserId(Long id) {
+        String sql = "select s.*, u.name from schedule s join user u on s.authorId = u.userId where u.userid=?";
+        return jdbcTemplate.query(sql, scheduleWithUserNameMapper(), id);
     }
 
     @Override
@@ -100,10 +106,10 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
                 return new ScheduleWithUserNameDto(
                         rs.getLong("scheduleId"),
                         rs.getLong("authorId"),
-                        rs.getString("name"),
                         rs.getString("task"),
                         rs.getTimestamp("createDate").toLocalDateTime(),
-                        rs.getTimestamp("lastModifiedDate").toLocalDateTime()
+                        rs.getTimestamp("lastModifiedDate").toLocalDateTime(),
+                        rs.getString("name")
                 );
             }
         };

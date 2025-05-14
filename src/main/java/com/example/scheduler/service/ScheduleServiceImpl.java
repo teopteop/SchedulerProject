@@ -5,6 +5,7 @@ import com.example.scheduler.dto.request.CreateRequestDto;
 import com.example.scheduler.dto.request.UpdateRequestDto;
 import com.example.scheduler.dto.response.PasswordResponseDto;
 import com.example.scheduler.dto.response.ScheduleResponseDto;
+import com.example.scheduler.dto.response.ScheduleWithUserNameDto;
 import com.example.scheduler.entity.Schedule;
 import com.example.scheduler.exception.PasswordMismatchException;
 import com.example.scheduler.exception.QueryFailedException;
@@ -44,6 +45,14 @@ public class ScheduleServiceImpl implements ScheduleService{
     public ScheduleResponseDto findScheduleById(Long id) {
         return scheduleRepository.findScheduleById(id)
                 .stream().findAny().orElseThrow(()-> new ScheduleNotFoundException("해당 id와 일치하는 일정이 없습니다."));
+    }
+
+    @Override
+    public List<ScheduleWithUserNameDto> findScheduleByUserId(Long id) {
+        List<ScheduleWithUserNameDto> dtos = scheduleRepository.findScheduleByUserId(id);
+        if(dtos.isEmpty()){
+            throw new ScheduleNotFoundException("해당 id와 일치하는 일정이 없습니다.");
+        } return dtos;
     }
 
     @Override

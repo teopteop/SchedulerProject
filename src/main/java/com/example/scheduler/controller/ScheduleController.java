@@ -4,6 +4,7 @@ import com.example.scheduler.dto.request.DeleteRequestDto;
 import com.example.scheduler.dto.request.CreateRequestDto;
 import com.example.scheduler.dto.request.UpdateRequestDto;
 import com.example.scheduler.dto.response.ScheduleResponseDto;
+import com.example.scheduler.dto.response.ScheduleWithUserNameDto;
 import com.example.scheduler.service.ScheduleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +39,14 @@ public class ScheduleController {
             @PathVariable Long id
     ){
         return new ResponseEntity<>(scheduleService.findScheduleById(id), HttpStatus.OK);
+    }
+
+    //userId 를 통한 일정 조회
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<ScheduleWithUserNameDto>> findScheduleByUserId(
+            @PathVariable Long id
+    ){
+        return new ResponseEntity<>(scheduleService.findScheduleByUserId(id), HttpStatus.OK);
     }
 
     //일정 업데이트
