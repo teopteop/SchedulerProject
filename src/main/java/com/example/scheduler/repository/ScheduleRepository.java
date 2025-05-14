@@ -14,6 +14,6 @@ public interface ScheduleRepository {
     List<ScheduleResponseDto> findScheduleById(Long id);
     int updateSchedule(Long id, UpdateRequestDto updateRequestDto);
     List<PasswordResponseDto> getPasswordDto(Long id);
-    void deleteSchedule(Long id);
+    int deleteSchedule(Long id);
     List<UserIdResponseDto> userIdFindByAuthorId(Long id);
 }

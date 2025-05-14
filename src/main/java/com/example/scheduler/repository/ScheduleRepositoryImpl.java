@@ -58,12 +58,12 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
 
     @Override
     public int updateSchedule(Long id, UpdateRequestDto updateRequestDto) {
-        return jdbcTemplate.update("update schedule set task=?, authorId=? where id=?", updateRequestDto.getTask(), updateRequestDto.getAuthorId(), id);
+        return jdbcTemplate.update("update schedule set task=?, authorId=? where scheduleId=?", updateRequestDto.getTask(), updateRequestDto.getAuthorId(), id);
     }
 
     @Override
-    public void deleteSchedule(Long id) {
-        int rs = jdbcTemplate.update("delete from schedule where id=?", id);
+    public int deleteSchedule(Long id) {
+        return jdbcTemplate.update("delete from schedule where scheduleId=?", id);
     }
 
     //password 가 필요할 시 사용
@@ -72,6 +72,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
         return jdbcTemplate.query("select scheduleId, password from schedule where scheduleId=?", passwordMapper(), id);
     }
 
+    //user 를 조회하는 메서드
     @Override
     public List<UserIdResponseDto> userIdFindByAuthorId(Long id) {
         return jdbcTemplate.query("select * from user where userId=?", userIdMapper(), id);

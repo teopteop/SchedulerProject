@@ -13,6 +13,6 @@ public interface ScheduleService {
     ScheduleResponseDto saveSchedule(CreateRequestDto cDto);
     List<ScheduleResponseDto> findAllSchedule();
     ScheduleResponseDto findScheduleById(Long id);
-    Optional<ScheduleResponseDto> updateSchedule(Long id, UpdateRequestDto updateRequestDto);
+    ScheduleResponseDto updateSchedule(Long id, UpdateRequestDto updateRequestDto);
     void deleteSchedule(Long id, DeleteRequestDto deleteRequestDto);
 }
