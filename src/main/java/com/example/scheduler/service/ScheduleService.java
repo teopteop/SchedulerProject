@@ -7,11 +7,12 @@ import com.example.scheduler.dto.request.UpdateRequestDto;
 import com.example.scheduler.dto.response.ScheduleResponseDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ScheduleService {
-//    ScheduleResponseDto saveSchedule(CreateRequestDto cDto);
+    ScheduleResponseDto saveSchedule(CreateRequestDto cDto);
     List<ScheduleResponseDto> findAllSchedule();
     ScheduleResponseDto findScheduleById(Long id);
-    ScheduleResponseDto updateSchedule(Long id, UpdateRequestDto updateRequestDto);
+    Optional<ScheduleResponseDto> updateSchedule(Long id, UpdateRequestDto updateRequestDto);
     void deleteSchedule(Long id, DeleteRequestDto deleteRequestDto);
 }

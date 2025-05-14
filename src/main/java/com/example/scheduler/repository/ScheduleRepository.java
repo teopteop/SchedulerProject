@@ -9,11 +9,11 @@ import com.example.scheduler.entity.Schedule;
 import java.util.List;
 
 public interface ScheduleRepository {
-//    Long saveSchedule(Schedule schedule);
+    Long saveSchedule(Schedule schedule);
     List<ScheduleResponseDto> findAllSchedule();
-    ScheduleResponseDto findScheduleById(Long id);
+    List<ScheduleResponseDto> findScheduleById(Long id);
     int updateSchedule(Long id, UpdateRequestDto updateRequestDto);
-    PasswordResponseDto getPasswordDto(Long id);
+    List<PasswordResponseDto> getPasswordDto(Long id);
     void deleteSchedule(Long id);
     List<UserIdResponseDto> userIdFindByAuthorId(Long id);
 }

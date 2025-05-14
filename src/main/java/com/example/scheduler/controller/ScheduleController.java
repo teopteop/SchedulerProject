@@ -32,6 +32,7 @@ public class ScheduleController {
         return new ResponseEntity<>(scheduleService.findAllSchedule(), HttpStatus.OK);
     }
 
+    //PscheduleId 를 통한 일정 조회
     @GetMapping("/{id}")
     public ResponseEntity<ScheduleResponseDto> findScheduleById(
             @PathVariable Long id
@@ -39,12 +40,13 @@ public class ScheduleController {
         return new ResponseEntity<>(scheduleService.findScheduleById(id), HttpStatus.OK);
     }
 
+    //일정 업데이트
     @PatchMapping("/{id}")
     public ResponseEntity<ScheduleResponseDto> updateSchedule(
             @PathVariable Long id,
             @RequestBody UpdateRequestDto updateRequestDto
     ){
-      return new ResponseEntity<>(scheduleService.updateSchedule(id, updateRequestDto), HttpStatus.OK);
+      return new ResponseEntity<>(scheduleService.updateSchedule(id, updateRequestDto).get(), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

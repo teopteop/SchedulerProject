@@ -3,8 +3,10 @@ package com.example.scheduler.repository;
 import com.example.scheduler.dto.request.UpdateRequestDto;
 import com.example.scheduler.dto.response.PasswordResponseDto;
 import com.example.scheduler.dto.response.ScheduleResponseDto;
+import com.example.scheduler.dto.response.ScheduleWithUserNameDto;
 import com.example.scheduler.dto.response.UserIdResponseDto;
 import com.example.scheduler.entity.Schedule;
+import com.example.scheduler.exception.ScheduleNotFoundException;
 import com.example.scheduler.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -32,31 +34,31 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
     @Override
     public Long saveSchedule(Schedule schedule) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        simpleJdbcInsert.withTableName("schedule").usingColumns("password","task","author") //컬럼지정 추가
-                .usingGeneratedKeyColumns("id");
+        simpleJdbcInsert.withTableName("schedule").usingColumns("authorId","password","task") //컬럼지정 추가
+                .usingGeneratedKeyColumns("scheduleId");
 
         Map<String, Object> params = new HashMap<>();
+        params.put("authorId", schedule.getAuthorId());
         params.put("password", schedule.getPassword());
         params.put("task", schedule.getTask());
-        params.put("author", schedule.getAuthor());
+
 
         return simpleJdbcInsert.executeAndReturnKey(new MapSqlParameterSource(params)).longValue();
     }
 
     @Override
     public List<ScheduleResponseDto> findAllSchedule() {
-        return jdbcTemplate.query("select * from schedule", scheduleFindRowMapper());
+        return jdbcTemplate.query("select * from schedule", scheduleMapper());
     }
 
     @Override
-    public ScheduleResponseDto findScheduleById(Long id) {
-        return jdbcTemplate.query("select * from schedule where id=?", scheduleFindRowMapper(), id)
-                .stream().findAny().orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "requested ID does not exist."));
+    public List<ScheduleResponseDto> findScheduleById(Long id) {
+        return jdbcTemplate.query("select * from schedule where scheduleId=?", scheduleMapper(), id);
     }
 
     @Override
     public int updateSchedule(Long id, UpdateRequestDto updateRequestDto) {
-        return jdbcTemplate.update("update schedule set task=?, author=? where id=?", updateRequestDto.getTask(), updateRequestDto.getAuthor(), id);
+        return jdbcTemplate.update("update schedule set task=?, authorId=? where id=?", updateRequestDto.getTask(), updateRequestDto.getAuthorId(), id);
     }
 
     @Override
@@ -66,23 +68,38 @@ public class ScheduleRepositoryImpl implements ScheduleRepository{
 
     //password 가 필요할 시 사용
     @Override
-    public PasswordResponseDto getPasswordDto(Long id) {
-        return jdbcTemplate.query("select id, password from schedule where id=?", passwordMapper(), id)
-                .stream().findAny().orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "requested ID does not exist."));
+    public List<PasswordResponseDto> getPasswordDto(Long id) {
+        return jdbcTemplate.query("select scheduleId, password from schedule where scheduleId=?", passwordMapper(), id);
     }
 
     @Override
     public List<UserIdResponseDto> userIdFindByAuthorId(Long id) {
-        return jdbcTemplate.query("select * from user where id=?", userIdMapper(), id);
+        return jdbcTemplate.query("select * from user where userId=?", userIdMapper(), id);
     }
 
-    private RowMapper<ScheduleResponseDto> scheduleFindRowMapper() {
+    private RowMapper<ScheduleResponseDto> scheduleMapper() {
         return new RowMapper<ScheduleResponseDto>() {
             @Override
             public ScheduleResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
                 return new ScheduleResponseDto(
                         rs.getLong("scheduleId"),
                         rs.getLong("authorId"),
+                        rs.getString("task"),
+                        rs.getTimestamp("createDate").toLocalDateTime(),
+                        rs.getTimestamp("lastModifiedDate").toLocalDateTime()
+                );
+            }
+        };
+    }
+
+    private RowMapper<ScheduleWithUserNameDto> scheduleWithUserNameMapper() {
+        return new RowMapper<ScheduleWithUserNameDto>() {
+            @Override
+            public ScheduleWithUserNameDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new ScheduleWithUserNameDto(
+                        rs.getLong("scheduleId"),
+                        rs.getLong("authorId"),
+                        rs.getString("name"),
                         rs.getString("task"),
                         rs.getTimestamp("createDate").toLocalDateTime(),
                         rs.getTimestamp("lastModifiedDate").toLocalDateTime()
