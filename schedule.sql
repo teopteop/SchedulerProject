@@ -3,7 +3,7 @@ create table schedule
     scheduleId bigint auto_increment primary key,
     authorId bigint not null comment "Refers to user.userId",
     password varchar(20) not null,
-    task varchar(500) not null,
+    task varchar(200) not null,
     createDate timestamp default current_timestamp,
     lastModifiedDate timestamp default current_timestamp on update  current_timestamp,
     foreign key (authorId) references user(userId)
