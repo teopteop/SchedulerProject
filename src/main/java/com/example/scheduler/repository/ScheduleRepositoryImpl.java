@@ -6,15 +6,11 @@ import com.example.scheduler.dto.response.ScheduleResponseDto;
 import com.example.scheduler.dto.response.ScheduleWithUserNameDto;
 import com.example.scheduler.dto.response.UserIdResponseDto;
 import com.example.scheduler.entity.Schedule;
-import com.example.scheduler.exception.ScheduleNotFoundException;
-import com.example.scheduler.exception.UserNotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;

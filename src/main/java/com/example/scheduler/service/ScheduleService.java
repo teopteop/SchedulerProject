@@ -8,7 +8,6 @@ import com.example.scheduler.dto.response.ScheduleResponseDto;
 import com.example.scheduler.dto.response.ScheduleWithUserNameDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ScheduleService {
     ScheduleResponseDto saveSchedule(CreateRequestDto cDto);
